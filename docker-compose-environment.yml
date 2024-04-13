@@ -11,24 +11,11 @@ services:
       - "5432:5432"
     volumes:
       - ./.pgdata:/var/lib/postgresql/data
-      - ./postgres/schemas:/docker-entrypoint-initdb.d/banner_db.sql
-      - ./postgres/data/initial_data.sql:/docker-entrypoint-initdb.d/initial_data.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
-    restart: on-failure
-
-  banner_service_go:
-    image: banner_service_go
-    depends_on:
-      banner_db:
-        condition: service_healthy
-    networks:
-      - application
-    ports:
-      - "8080:8080"
     restart: on-failure
 
 networks:
