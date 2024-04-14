@@ -14,11 +14,11 @@ docker-build:
 
 .PHONY: docker-run
 docker-run:
-	docker compose --env-file $(ENV) up -d
+	docker compose --env-file $(ENV) -f ./docker-compose.yml up -d
 
 .PHONY: docker-down
 docker-down:
-	docker compose --env-file $(ENV) down
+	docker compose --env-file $(ENV) -f ./docker-compose.yml down
 
 .PHONY: run-environment
 run-environment:

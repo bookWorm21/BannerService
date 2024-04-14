@@ -1,7 +1,9 @@
 package service
 
-import "banner_service/internal/model/banner"
+import (
+	"banner_service/internal/model"
+)
 
 type BannerService interface {
-	GetUserBanner(request banner.UserBannerRequest) (banner.UserBannerResponse, error)
+	GetUserBanner(info banner.Info) (banner.Banner, error)
 }

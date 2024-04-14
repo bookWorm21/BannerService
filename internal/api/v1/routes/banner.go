@@ -1,4 +1,4 @@
-package banner
+package routes
 
 import (
 	"banner_service/internal/api/handlers"
@@ -6,8 +6,8 @@ import (
 )
 
 func SetupRoutes(app *fiber.App, handler handlers.BannerHandler) {
-	// api := app.Group("/api/v1")
+	api := app.Group("/api/v1")
 
-	app.Get("/user_banner", handler.GetUserBanner)
-	app.Get("/banner", handler.GetBanner)
+	api.Get("/user_banner", handler.GetUserBanner)
+	api.Get("/banner", handler.GetBanner)
 }

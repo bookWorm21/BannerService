@@ -1,21 +1,21 @@
 package banner
 
 import (
-	"banner_service/internal/model/banner"
-	service2 "banner_service/internal/service"
-	"log"
+	banner "banner_service/internal/model"
+	"banner_service/internal/repository"
+	"banner_service/internal/service"
 )
 
-var _ service2.BannerService = (*Service)(nil)
+var _ service.BannerService = (*Service)(nil)
 
 type Service struct {
+	repository repository.GettingBannerRepository
 }
 
-func NewService() *Service {
-	return &Service{}
+func NewService(repository repository.GettingBannerRepository) *Service {
+	return &Service{repository: repository}
 }
 
-func (service *Service) GetUserBanner(request banner.UserBannerRequest) (banner.UserBannerResponse, error) {
-	log.Println("GetUserBanner")
-	return banner.UserBannerResponse{}, nil
+func (s *Service) GetUserBanner(info banner.Info) (banner.Banner, error) {
+	return s.repository.Get(info)
 }

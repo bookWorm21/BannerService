@@ -2,10 +2,15 @@ package banner
 
 import (
 	"banner_service/internal/api/handlers"
-	models "banner_service/internal/model/banner"
+	"banner_service/internal/api/handlers/requests"
+	banner "banner_service/internal/model"
 	"banner_service/internal/service"
 	"github.com/gofiber/fiber/v2"
 	"log"
+)
+
+const (
+	UseLastVersionDefault bool = false
 )
 
 var _ handlers.BannerHandler = (*Handler)(nil)
@@ -31,13 +36,17 @@ func (h *Handler) GetUserBanner(ctx *fiber.Ctx) error {
 	if inMap && len(tokenValue) > 0 {
 		log.Print(tokenValue[0])
 	}
-	var request models.UserBannerRequest
+	var request requests.UserBannerRequest
 	err := ctx.QueryParser(&request)
 	if err != nil {
 		return err
 	}
 
-	result, err := h.Service.GetUserBanner(request)
+	var bannerInfo = banner.Info{TagId: request.TagId, FeatureId: request.FeatureId, UseLastVersion: UseLastVersionDefault}
+	if request.UseLastVersion != nil {
+		bannerInfo.UseLastVersion = *request.UseLastVersion
+	}
+	result, err := h.Service.GetUserBanner(bannerInfo)
 	if err != nil {
 		return err
 	}
