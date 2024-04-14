@@ -6,7 +6,6 @@ import (
 	"banner_service/internal/service"
 	"github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
-	"log"
 )
 
 const (
@@ -37,12 +36,6 @@ func (h *Handler) GetBanner(ctx *fiber.Ctx) error {
 }
 
 func (h *Handler) GetUserBanner(ctx *fiber.Ctx) error {
-	var headers = ctx.GetReqHeaders()
-	tokenValue, inMap := headers["Token"]
-	if inMap && len(tokenValue) > 0 {
-		log.Print(tokenValue[0])
-	}
-
 	var tagId = ctx.QueryInt(TagId, -1)
 	if tagId == -1 {
 		ctx.Status(fiber.StatusBadRequest)
