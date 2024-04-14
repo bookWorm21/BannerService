@@ -2,8 +2,12 @@
 ## Тестирование сценария получения баннера пользователем
 
 Для тестов были добавлены два баннера,
+```
 Banner: Id = 1, tags = [1, 2], feature = 1, enabled = true, content = '{"title": "some_title", "text": "some_text", "url": "some_url"}'
+```
+```
 Banner: Id = 2, tags = [3], feature = 1, enabled = false, content = '{"text": "warning_banner"}'
+```
 
 1. Результат запроса - Unauthorized, так как не передан token авторизации:
 ![image](https://github.com/bookWorm21/BannerService/assets/60971260/55b9417a-121f-4593-b93c-61f282ae20cc)
