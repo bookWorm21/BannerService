@@ -1,4 +1,5 @@
-![image](https://github.com/bookWorm21/BannerService/assets/60971260/80b5059a-d56e-41b7-a529-8668902b744a)# [Главная](../README.md)
+# [Главная](../README.md)
+## Тестирование сценария получения баннера пользователем
 
 Для тестов были добавлены два баннера,
 Banner: Id = 1, tags = [1, 2], feature = 1, enabled = true, content = '{"title": "some_title", "text": "some_text", "url": "some_url"}'
