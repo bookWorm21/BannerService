@@ -16,7 +16,7 @@ func HaveAccessToAdmin(ctx *fiber.Ctx) error {
 	}
 
 	if token == adminToken {
-		return nil
+		return ctx.Next()
 	}
 
 	ctx.Status(403)
@@ -30,7 +30,7 @@ func HaveAccessToUser(ctx *fiber.Ctx) error {
 	}
 
 	if token == userToken {
-		return nil
+		return ctx.Next()
 	}
 
 	ctx.Status(403)
@@ -40,7 +40,7 @@ func HaveAccessToUser(ctx *fiber.Ctx) error {
 func GetToken(ctx *fiber.Ctx) (string, error) {
 	var headers = ctx.GetReqHeaders()
 	tokenValue, inMap := headers["Token"]
-	if inMap && len(tokenValue) == 0 {
+	if inMap && len(tokenValue) > 0 {
 		return tokenValue[0], nil
 	}
 
