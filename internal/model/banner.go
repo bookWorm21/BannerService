@@ -1,11 +1,13 @@
 package banner
 
+import "encoding/json"
+
 type Banner struct {
-	Content string
+	Content json.RawMessage
 }
 
 type Info struct {
-	TagId          int
-	FeatureId      int
-	UseLastVersion bool
+	TagId           int
+	FeatureId       int
+	UseLastRevision bool
 }

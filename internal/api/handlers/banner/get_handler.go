@@ -2,15 +2,21 @@ package banner
 
 import (
 	"banner_service/internal/api/handlers"
-	"banner_service/internal/api/handlers/requests"
 	banner "banner_service/internal/model"
 	"banner_service/internal/service"
 	"github.com/gofiber/fiber/v2"
+	"github.com/pkg/errors"
 	"log"
 )
 
 const (
-	UseLastVersionDefault bool = false
+	UseLastRevisionDefault bool = false
+)
+
+const (
+	TagId           string = "tag_id"
+	FeatureId       string = "feature_id"
+	UseLastRevision string = "use_last_revision"
 )
 
 var _ handlers.BannerHandler = (*Handler)(nil)
@@ -36,22 +42,28 @@ func (h *Handler) GetUserBanner(ctx *fiber.Ctx) error {
 	if inMap && len(tokenValue) > 0 {
 		log.Print(tokenValue[0])
 	}
-	var request requests.UserBannerRequest
-	err := ctx.QueryParser(&request)
+
+	var tagId = ctx.QueryInt(TagId, -1)
+	if tagId == -1 {
+		ctx.Status(fiber.StatusBadRequest)
+		return errors.Wrapf(NotCorrectData, "Tag id")
+	}
+
+	var featureId = ctx.QueryInt(FeatureId, -1)
+	if featureId == -1 {
+		ctx.Status(fiber.StatusBadRequest)
+		return errors.Wrapf(NotCorrectData, "Feature id")
+	}
+
+	var bannerInfo = banner.Info{TagId: tagId, FeatureId: featureId, UseLastRevision: UseLastRevisionDefault}
+	bannerInfo.UseLastRevision = ctx.QueryBool(UseLastRevision, UseLastRevisionDefault)
+
+	result, err := h.Service.GetUserBanner(ctx, bannerInfo)
 	if err != nil {
 		return err
 	}
 
-	var bannerInfo = banner.Info{TagId: request.TagId, FeatureId: request.FeatureId, UseLastVersion: UseLastVersionDefault}
-	if request.UseLastVersion != nil {
-		bannerInfo.UseLastVersion = *request.UseLastVersion
-	}
-	result, err := h.Service.GetUserBanner(bannerInfo)
-	if err != nil {
-		return err
-	}
-
-	err = ctx.JSON(&result)
+	err = ctx.Status(200).JSON(result.Content)
 	if err != nil {
 		return err
 	}

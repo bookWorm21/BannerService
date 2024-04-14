@@ -4,6 +4,7 @@ import (
 	banner "banner_service/internal/model"
 	"banner_service/internal/repository"
 	"banner_service/internal/service"
+	"github.com/gofiber/fiber/v2"
 )
 
 var _ service.BannerService = (*Service)(nil)
@@ -16,6 +17,6 @@ func NewService(repository repository.GettingBannerRepository) *Service {
 	return &Service{repository: repository}
 }
 
-func (s *Service) GetUserBanner(info banner.Info) (banner.Banner, error) {
-	return s.repository.Get(info)
+func (s *Service) GetUserBanner(ctx *fiber.Ctx, info banner.Info) (banner.Banner, error) {
+	return s.repository.Get(ctx, info)
 }

@@ -21,8 +21,6 @@ func connectToPostgres(appConfig *config.Config) *pgxpool.Pool {
 		appConfig.PostgresPort,
 		appConfig.PostgresName)
 
-	log.Println(appConfig.PostgresUser)
-	log.Println(appConfig.PostgresPass)
 	pool, err := pgxpool.New(context.Background(), connString)
 	if err != nil {
 		panic(fmt.Errorf("unable to connect to database: %v", err))
